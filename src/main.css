@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 214 47% 98%;
+    --foreground: 207 40% 26%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 207 40% 26%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 207 40% 26%;
+
+    --border: 204 35% 89%;
+    --input: 204 35% 89%;
+
+    --primary: 207 40% 26%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 207 40% 26%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 207 40% 26%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 206 49% 32%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  html {
+    @apply font-montserrat text-base/normal;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  #app {
+    min-height: 100%;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: calc(var(--radius) - 4px);
+  background-color: hsl(var(--muted-foreground) / 0.3) !important;
+}
+
+::-webkit-scrollbar-track {
+  background-color: hsl(var(--muted)) !important;
+}
