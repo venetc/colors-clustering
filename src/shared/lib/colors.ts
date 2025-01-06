@@ -1,4 +1,4 @@
-export function chunkRGBSkipAlpha(data: Uint8ClampedArray): [number, number, number][] {
+export function chunkRGBSkipAlpha(data: ArrayLike<number>): [number, number, number][] {
   const chunkCount = ((data.length + 3) / 4) | 0;
   const result: [number, number, number][] = Array.from({ length: chunkCount });
 

@@ -22,6 +22,7 @@ export function applyQuantization(pixels: [number, number, number][], maxColors:
       if (!leftBox) continue;
 
       queue.enqueue(leftBox);
+
       if (rightBox) {
         queue.enqueue(rightBox);
         colorCount++;

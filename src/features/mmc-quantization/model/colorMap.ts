@@ -16,5 +16,6 @@ export function createColorMap() {
   return {
     push: (box: VolumeBox) => boxesPQueue.enqueue({ box, color: box.data.average }),
     get palette() { return boxesPQueue.map(({ color }) => color) },
+    get boxes() { return boxesPQueue.map(({ box }) => box) },
   }
 }

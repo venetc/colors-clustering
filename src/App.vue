@@ -1,26 +1,43 @@
 <script setup lang="ts">
 import { mmcqModel } from '@/features/mmc-quantization'
 import { imageReaderModel } from '@/features/read-image'
+import { useThreeRenderer } from '@/features/three-renderer';
+
 import { ImageUploader } from '@/features/upload-image';
-
 import { chunkRGBSkipAlpha, rgbToHex } from '@/shared/lib/colors';
-import { AspectRatio } from '@/shared/ui/aspect-ratio';
 
-import { ref, watch } from 'vue';
+import { AspectRatio } from '@/shared/ui/aspect-ratio';
+import { computed, shallowRef, watch } from 'vue';
+
+const AMOUNT_OF_COLORS = 10;
+const PLACEHOLDER_COLORS = Array.from({ length: AMOUNT_OF_COLORS }, () => '#F1F5F9');
 
 const { readImage, resetImage, dataURL, ui8ca } = imageReaderModel.useImageReader()
 
-const colorsA = ref<string[]>([])
+const imageColors = shallowRef<string[]>([])
+
+const colors = computed({
+  get: () => imageColors.value.length ? imageColors.value : PLACEHOLDER_COLORS,
+  set: (colors) => {
+    imageColors.value = colors
+  },
+})
+
+const { canvasRef, pointsArray } = useThreeRenderer({ debug: false })
 
 watch([ui8ca, dataURL], ([ui8ca]) => {
   if (!ui8ca) {
-    colorsA.value = []
+    imageColors.value = []
+    pointsArray.value = null
     return
   }
 
   const chunkRGB = chunkRGBSkipAlpha(ui8ca)
+  const colorMap = mmcqModel.applyQuantization(chunkRGB, AMOUNT_OF_COLORS)
 
-  colorsA.value = mmcqModel.applyQuantization(chunkRGB, 10).palette.map(rgbToHex)
+  imageColors.value = colorMap.palette.map(rgbToHex)
+
+  pointsArray.value = ui8ca
 })
 </script>
 
@@ -47,18 +64,22 @@ watch([ui8ca, dataURL], ([ui8ca]) => {
           </div>
         </AspectRatio>
       </div>
+
+      <div class="w-full border shadow-sm p-2 rounded-md flex flex-col justify-around gap-2">
+        <div class="flex items-center gap-2">
+          <div
+            v-for="(color, index) in colors"
+            :key="`${color}-${index}`"
+            class=" rounded-sm w-full aspect-square border"
+            :style="{ backgroundColor: color, borderColor: color }"
+          />
+        </div>
+      </div>
     </div>
 
     <div class="w-full border shadow-sm p-2 rounded-md flex flex-col justify-around gap-2">
-      <div v-if="colorsA.length">
-        <div class="flex items-center gap-2">
-          <div
-            v-for="color in colorsA"
-            :key="color"
-            class=" rounded-sm w-full aspect-square"
-            :style="{ backgroundColor: color }"
-          />
-        </div>
+      <div class="w-full h-full">
+        <canvas ref="canvasRef" />
       </div>
     </div>
   </div>
