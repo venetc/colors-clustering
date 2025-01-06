@@ -7,7 +7,6 @@ import {
   PointsMaterial,
   Scene,
   Uint8BufferAttribute,
-  Vector3,
   WebGLRenderer,
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
@@ -15,7 +14,7 @@ import { shallowRef, watch } from 'vue';
 
 export function useThreeRenderer({ debug = false } = {}) {
   const canvasRef = shallowRef<HTMLCanvasElement | null>(null);
-  const pointsArray = shallowRef<Uint8ClampedArray<ArrayBufferLike> | null>(null);
+  const pointsArray = shallowRef<Uint8ClampedArray | null>(null);
 
   const renderer = shallowRef<WebGLRenderer>();
   const scene = shallowRef<Scene>();
