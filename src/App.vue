@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { mmcqModel } from '@/features/mmc-quantization'
 import { imageReaderModel } from '@/features/read-image'
-import { useThreeRenderer } from '@/features/three-renderer';
 
+import { useThreeRenderer } from '@/features/three-renderer';
 import { ImageUploader } from '@/features/upload-image';
 import { chunkRGBSkipAlpha, rgbToHex } from '@/shared/lib/colors';
 
@@ -25,7 +25,7 @@ const colors = computed({
 
 const { canvasRef, pointsArray } = useThreeRenderer({ debug: false })
 
-watch([ui8ca, dataURL], ([ui8ca]) => {
+watch(ui8ca, (ui8ca) => {
   if (!ui8ca) {
     imageColors.value = []
     pointsArray.value = null
@@ -36,8 +36,7 @@ watch([ui8ca, dataURL], ([ui8ca]) => {
   const colorMap = mmcqModel.applyQuantization(chunkRGB, AMOUNT_OF_COLORS)
 
   imageColors.value = colorMap.palette.map(rgbToHex)
-
-  pointsArray.value = ui8ca
+  pointsArray.value = ui8ca.filter((_, index) => (index + 1) % 4 !== 0)
 })
 </script>
 

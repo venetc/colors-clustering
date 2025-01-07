@@ -9,12 +9,12 @@ import {
   Uint8BufferAttribute,
   WebGLRenderer,
 } from 'three'
-import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { shallowRef, watch } from 'vue';
 
 export function useThreeRenderer({ debug = false } = {}) {
   const canvasRef = shallowRef<HTMLCanvasElement | null>(null);
-  const pointsArray = shallowRef<Uint8ClampedArray | null>(null);
+  const pointsArray = shallowRef<ArrayLike<number> | null>(null);
 
   const renderer = shallowRef<WebGLRenderer>();
   const scene = shallowRef<Scene>();
@@ -98,7 +98,7 @@ export function useThreeRenderer({ debug = false } = {}) {
     dotGeometry.setAttribute('color', new Uint8BufferAttribute(points, 3, true));
     dotGeometry.computeBoundingBox();
 
-    const dotMaterial = new PointsMaterial({ size: 1.25, vertexColors: true });
+    const dotMaterial = new PointsMaterial({ size: 1, vertexColors: true });
     const dot = new Points(dotGeometry, dotMaterial);
     scene.value.add(dot);
 
