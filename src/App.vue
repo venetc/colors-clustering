@@ -9,7 +9,7 @@ import { chunkRGBSkipAlpha, rgbToHex } from '@/shared/lib/colors';
 import { AspectRatio } from '@/shared/ui/aspect-ratio';
 import { computed, shallowRef, watch } from 'vue';
 
-const AMOUNT_OF_COLORS = 3;
+const AMOUNT_OF_COLORS = 10;
 const PLACEHOLDER_COLORS = Array.from({ length: AMOUNT_OF_COLORS }, () => '#F1F5F9');
 
 const { readImage, resetImage, dataURL, ui8ca } = imageReaderModel.useImageReader()
@@ -34,8 +34,6 @@ watch(ui8ca, (ui8ca) => {
 
   const chunkRGB = chunkRGBSkipAlpha(ui8ca)
   const colorMap = mmcqModel.applyQuantization(chunkRGB, AMOUNT_OF_COLORS)
-  console.log({ chunkRGB })
-  console.log({ palette: colorMap.palette })
 
   imageColors.value = colorMap.palette.map(rgbToHex)
   pointsArray.value = ui8ca.filter((_, index) => (index + 1) % 4 !== 0)
